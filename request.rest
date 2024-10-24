@@ -1,6 +1,6 @@
 @host = http://localhost:3000
 
-### Peticiones events
+### REQUEST EVENTS
 
 ### Obtener todos los eventos
 ###
@@ -29,17 +29,35 @@ PUT {{host}}/api/events/41
 Content-Type: application/json
 
 {
-    "nombre": "Carrera nocturna",
-    "descripcion": "Carrera de 5km realizada por la noche.",
-    "fecha": "2026-8-4",
-    "ubicacion": "Albolote",
-    "tipoDeporte": "Atletismo"
+    "nombre": "Campeonato Fútbol Sala",
+    "descripcion": "Semifinal del campeonato regional de fútbol sala",
+    "fecha": "2025-8-5",
+    "ubicacion": "Burgos",
+    "tipoDeporte": "Fútbol"
 }
 
-### Borrar un evento
-DELETE {{host}}/api/events/40
 
-### Peticiones users
+### Borrar un evento
+DELETE {{host}}/api/events/41
+
+
+### Obtener eventos por fecha
+###
+GET {{host}}/api/events/upcoming
+
+
+### Obtener por tipos de deporte
+###
+GET {{host}}/api/events/sports?type=Atletismo
+
+
+// TODO: GET /api/events/date?from=2023-09-10&to=2023-09-20: Devuelve los eventos dentro del rango de fechas especificado.
+
+
+
+
+
+### REQUEST USERS
 
 ###
 POST {{host}}/api/users/register
