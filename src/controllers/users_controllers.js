@@ -1,6 +1,6 @@
 const { newUser, getById } = require("../models/users_models");
 
-// TODO: Terminar el login del usuario, error en el id nosequé 
+// Recuperar usuario por ID
 
 const UserId = async (req, res, next) => {
     const { userId } = req.params;
@@ -15,16 +15,17 @@ const UserId = async (req, res, next) => {
     }
 }
 
+// Crear nuevo usuario
+
 const postUser = async (req, res, next) => {
     try {
-        const userId = await newUser(req.body);
-        if (result === 0) {
+        const user = await newUser(req.body);
+        if (user === 0) {
             return res.status(404).json({ message: 'Error, login incorrecto' });
         }
-        const user = await getById(userId);
+        const userId = await getById(user);
         console.log(user)
-        console.log(userId)
-        res.json(user);
+        res.json(userId);
     } catch (error) {
         next(error);
     }

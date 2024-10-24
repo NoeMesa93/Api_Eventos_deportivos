@@ -45,7 +45,6 @@ DELETE {{host}}/api/events/40
 POST {{host}}/api/users/register
 Content-Type: application/json
 
-
 {
     "username": "Noelia",
     "password": "1234"

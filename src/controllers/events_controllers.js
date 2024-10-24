@@ -1,4 +1,4 @@
-const { selectAll, selectById, insertEvent, updateEvent, supEvent } = require('../models/events.models')
+const { selectAll, selectById, insertEvent, updateEvent, supEvent } = require('../models/events_models')
 
 // Seleccionar todos los eventos
 const selectAllEvents = async (req, res, next) => {
