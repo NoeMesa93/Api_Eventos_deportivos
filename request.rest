@@ -1,0 +1,52 @@
+@host = http://localhost:3000
+
+### Peticiones events
+
+### Obtener todos los eventos
+###
+GET {{host}}/api/events
+
+### Obtener evento por id
+###
+GET {{host}}/api/events/25
+
+### Crear nuevo evento
+###
+POST {{host}}/api/events
+Content-Type: application/json
+
+{
+    "nombre": "Carrera infantil 2km",
+    "descripcion": "Carrera de 2kms para niños menores de 16 años.",
+    "fecha": "2025-10-14",
+    "ubicacion": "Jaén",
+    "tipoDeporte": "Atletismo"
+}
+
+### Actualizar evento
+###
+PUT {{host}}/api/events/41
+Content-Type: application/json
+
+{
+    "nombre": "Carrera nocturna",
+    "descripcion": "Carrera de 5km realizada por la noche.",
+    "fecha": "2026-8-4",
+    "ubicacion": "Albolote",
+    "tipoDeporte": "Atletismo"
+}
+
+### Borrar un evento
+DELETE {{host}}/api/events/40
+
+### Peticiones users
+
+###
+POST {{host}}/api/users/register
+Content-Type: application/json
+
+
+{
+    "username": "Noelia",
+    "password": "1234"
+}
