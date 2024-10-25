@@ -5,6 +5,9 @@ const cors = require('cors');
 const app = express();
 app.use(express.json());
 
+// Middleware genérico para todos.
+
+
 app.use('/api', require('./routes/api.routes.js'))
 
 app.use(cors());

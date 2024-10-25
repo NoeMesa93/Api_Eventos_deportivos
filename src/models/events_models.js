@@ -47,7 +47,6 @@ const getByDate = async () => {
 // Obtener eventos por tipos de deporte
 const getBySportType = async (tipoDeporte) => {
     const [result] = await pool.query('SELECT * FROM eventos WHERE tipoDeporte = ? ORDER BY fecha ASC', [tipoDeporte])
-    console.log(result)
     return result;
 }
 

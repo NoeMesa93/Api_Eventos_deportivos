@@ -1,4 +1,6 @@
 @host = http://localhost:3000
+@tokenPepe = eyJhbGciOiJIUzI1NiJ9.UGVwZQ.Sqoz9-3DcqpMYBWcSX7X4BJ4_Xwhm-Li_lnUe6RD9cY
+@tokenLaura = eyJhbGciOiJIUzI1NiJ9.TGF1cmE.5lN2UMvvfYIDYiiF3MrqNLgeoMVmEdlCP1WOR-LoarE
 
 ### REQUEST EVENTS
 
@@ -8,11 +10,12 @@ GET {{host}}/api/events
 
 ### Obtener evento por id
 ###
-GET {{host}}/api/events/25
+GET {{host}}/api/events/ll
 
 ### Crear nuevo evento
 ###
 POST {{host}}/api/events
+Authorization: {{tokenPepe}}
 Content-Type: application/json
 
 {
@@ -25,7 +28,8 @@ Content-Type: application/json
 
 ### Actualizar evento
 ###
-PUT {{host}}/api/events/41
+PUT {{host}}/api/events/14
+Authorization: {{tokenPepe}}
 Content-Type: application/json
 
 {
@@ -39,6 +43,7 @@ Content-Type: application/json
 
 ### Borrar un evento
 DELETE {{host}}/api/events/41
+Authorization: {{tokenPepe}}
 
 
 ### Obtener eventos por fecha
@@ -53,17 +58,35 @@ GET {{host}}/api/events/sports?type=Atletismo
 
 // TODO: GET /api/events/date?from=2023-09-10&to=2023-09-20: Devuelve los eventos dentro del rango de fechas especificado.
 
-
-
-
-
 ### REQUEST USERS
 
+### Registrar nuevo usuario
 ###
 POST {{host}}/api/users/register
 Content-Type: application/json
 
 {
-    "username": "Noelia",
+    "username": "Pepito",
     "password": "1234"
 }
+
+
+###
+POST {{host}}/api/users/login
+Content-Type: application/json
+
+{
+    "username": "Laura",
+    "password": "1234"
+}
+
+###
+GET {{host}}/api/users/profile/
+Authorization: {{tokenPepe}}
+
+
+
+
+
+
+

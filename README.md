@@ -1,87 +1,36 @@
-# Express Base Application for API Creation
+Documentación y Pruebas
+Instrucciones claras para probar la API. Incluye documentación básica sobre cómo registrarse, iniciar sesión y probar las funcionalidades.
 
-This is a basic Express application template designed to help you create APIs quickly. It includes essential configurations and setup for starting an Express server.
+Esta API está diseñada para la gestión de eventos deportivos, creada con Node.js, express y Mysql.
+Permite a los usuarios registrar nuevos eventos y consultar detalles de eventos existentes.
+Los endpoints de la API incluyen funcionalidades para crear, obtener, actualizar y eliminar información tanto de eventos como de usuarios. La estructura está pensada para facilitar la integración con sistemas de gestión de eventos, con un enfoque en la simplicidad y la escalabilidad.
 
-## Features
+## USUARIOS
 
-- Basic Express server setup
-- CORS enabled
-- Environment configuration with `.env` support
+Podemos hacer varias peticiones a usuarios:
 
-## Getting Started
+## Registro de usuario
 
-### Prerequisites
+URL: /api/users/register
+MÉTODO: POST
+HEADERS: X
+BODY: { "username": "nombreDeNuevoUsuario", "password": "contraseñaUsuario" }
 
-Ensure you have Node.js and npm installed on your machine. You can download them from [Node.js official website](https://nodejs.org/).
+- Tanto la password como el usuario serán encriptados.
+- La respuesta será el nuevo usuario creado con la password encriptada.
 
-### Installation
+## Login de usuario
 
-1. **Clone the repository:**
+URL: /api/users/login:
+MÉTODO: POST
+HEADERS:
+BODY: {}
 
-```bash
-git clone https://github.com/mariogiron/express-init-template.git project-name
-```
+## Deuelve la información del usuario autenticado.
 
-2. **Navigate to the project directory:**
+URL: /api/users/profile
+MÉTODO: GET
+HEADERS:
+BODY: {}
 
-```bash
-cd project-name
-```
-
-3. **Install the dependencies:**
-
-```bash
-npm install
-```
-
-### Environment Configuration
-
-Create a `.env` file in the root of the project and configure your environment variables. An example `.env` file might look like this:
-
-```
-PORT=3000
-```
-
-### Running the Application
-
-#### Start the server
-
-Start the server by running:
-
-```bash
-npm start
-```
-
-The server will start and listen on the port defined in your `.env` file, or default to port 3000 if not specified.
-
-#### Development mode
-
-To start the server in development mode with `nodemon`, which will automatically restart the server on file changes, run:
-
-```bash
-npm run dev
-```
-
-### Available Scripts
-
-- **start**: Runs `node index.js` to start the server.
-- **dev**: Runs `nodemon index.js` to start the server in development mode with automatic restarts on file changes.
-
-### Project Structure
-
-    ├── src
-    │   ├── app.js          # Express app configuration
-    │   ├── models          # Data models
-    │   ├── controllers     # Route controllers
-    │   ├── routes          # Application routes
-    ├── .env                # Environment variables
-    ├── index.js           # Server creation and configuration
-    ├── package.json        # Project metadata and dependencies
-
-### Contributing
-
-Feel free to submit issues and pull requests to improve the project. For major changes, please open an issue first to discuss what you would like to change.
-
-### License
-
-This project is licensed under the ISC License - see the LICENSE file for details.
+- Devuelve la información protegida, solo accesible para el usuario logueado.

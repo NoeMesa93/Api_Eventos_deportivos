@@ -1,14 +1,25 @@
 const pool = require('../config/db');
 
-// POST / api / users / register: Permite registrar nuevos organizadores de eventos.Debe recibir un username y password y guardar los datos encriptados(usa bcrypt para el hashing de contraseñas).
+// Obtener un único usuario con el username
+
+const getByUsername = async (username) => {
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE username = ?', [username]);
+    if (result.length === 0) {
+        return null;
+    }
+    return result[0]
+}
+
+
+// Obtener usuario por Id.
 const getById = async (idUser) => {
     const [result] = await pool.query('SELECT * FROM usuarios WHERE id = ?', [idUser])
     if (result.length === 0) return null;
     return result[0];
 }
 
-// Crear nuevo usuario
 
+// Crear nuevo usuario.
 const newUser = async ({ username, password }) => {
     const [result] = await pool.query('INSERT INTO usuarios (username, password) VALUES (?, ?)', [username, password])
     if (result.affectedRows === 0) {
@@ -17,8 +28,12 @@ const newUser = async ({ username, password }) => {
 }
 
 
+// Permite a los usuarios autenticarse.
+
+
 
 module.exports = {
     getById,
-    newUser
+    newUser,
+    getByUsername
 }

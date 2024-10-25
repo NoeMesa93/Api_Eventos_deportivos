@@ -4,6 +4,9 @@ const { selectAll, selectById, insertEvent, updateEvent, supEvent, getByDate, ge
 const selectAllEvents = async (req, res, next) => {
     try {
         const result = await selectAll();
+        if (!result) {
+            return res.status(404).json({ message: 'No se encontraron eventos.' })
+        }
         res.json(result);
     } catch (error) {
         next(error);
@@ -30,7 +33,7 @@ const postEvent = async (req, res, next) => {
     try {
         const result = await insertEvent(req.body);
         if (result === 0) {
-            return res.status(400).json({ message: 'No se ha podido insertar el nuevo evento.' });
+            return res.status(404).json({ message: 'No se ha podido insertar el nuevo evento.' });
         }
         const event = await selectById(result);
         res.json(event);
@@ -88,7 +91,6 @@ const eventsBySportType = async (req, res, next) => {
     const { type } = req.query;
     try {
         const events = await getBySportType(type); // Usar "type" aquí también
-        console.log(events);
 
         if (events.length === 0) {
             return res.status(404).json({ message: "No hay eventos para ese tipo de deporte" });
