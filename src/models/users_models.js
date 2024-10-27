@@ -20,7 +20,7 @@ const getById = async (idUser) => {
 
 
 // Crear nuevo usuario.
-const newUser = async ({ username, password }) => {
+const postUser = async ({ username, password }) => {
     const [result] = await pool.query('INSERT INTO usuarios (username, password) VALUES (?, ?)', [username, password])
     if (result.affectedRows === 0) {
         return -1
@@ -28,12 +28,10 @@ const newUser = async ({ username, password }) => {
 }
 
 
-// Permite a los usuarios autenticarse.
-
 
 
 module.exports = {
     getById,
-    newUser,
+    postUser,
     getByUsername
 }

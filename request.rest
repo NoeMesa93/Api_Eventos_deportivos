@@ -2,15 +2,79 @@
 @tokenPepe = eyJhbGciOiJIUzI1NiJ9.UGVwZQ.Sqoz9-3DcqpMYBWcSX7X4BJ4_Xwhm-Li_lnUe6RD9cY
 @tokenLaura = eyJhbGciOiJIUzI1NiJ9.TGF1cmE.5lN2UMvvfYIDYiiF3MrqNLgeoMVmEdlCP1WOR-LoarE
 
+
+### REQUEST USERS
+
+### Registrar nuevo usuario
+###
+POST {{host}}/api/users/register
+Content-Type: application/json
+
+
+{
+    "username": "Lucía",
+    "password": "2525"
+}
+
+
+### Login de usuario 
+###
+POST {{host}}/api/users/login
+Content-Type: application/json
+
+{
+    "username": "Lucía",
+    "password": "2525"
+}
+
+
+### Obtener perfil de usuario
+###
+GET {{host}}/api/users/profile
+Authorization: eyJhbGciOiJIUzI1NiJ9.THVjw61h.JGq1x4tEkB1YiKsuHFmZ7H7g1QxZDzHZAfFGOQ5gQmw
+
+
+
+
 ### REQUEST EVENTS
 
 ### Obtener todos los eventos
 ###
 GET {{host}}/api/events
+Authorization: {{tokenLaura}}
+
+
 
 ### Obtener evento por id
 ###
-GET {{host}}/api/events/ll
+GET {{host}}/api/events/58
+Authorization: {{tokenLaura}}
+
+
+
+### Obtener eventos por fecha
+###
+GET {{host}}/api/events/upcoming
+Authorization: {{tokenLaura}}
+
+
+
+### Obtener por tipos de deporte
+###
+GET {{host}}/api/events?tipoDeporte=Fútbol
+Authorization: {{tokenLaura}}
+
+
+### Obtener eventos por fecha
+###
+GET {{host}}/api/events/date?from=2025-05-02&to=2025-09-20
+Authorization: {{tokenLaura}}
+
+
+TODO
+//Obtener eventos por página
+
+
 
 ### Crear nuevo evento
 ###
@@ -19,16 +83,19 @@ Authorization: {{tokenPepe}}
 Content-Type: application/json
 
 {
-    "nombre": "Carrera infantil 2km",
-    "descripcion": "Carrera de 2kms para niños menores de 16 años.",
-    "fecha": "2025-10-14",
-    "ubicacion": "Jaén",
-    "tipoDeporte": "Atletismo"
+    "nombre": "Partido de fútbol sala",
+    "descripcion": "Campeonato de fútbol entre los equipos de la liga",
+    "fecha": "2025-05-02",
+    "ubicacion": "Madrid",
+    "tipoDeporte": "Fútbol",
+    "organizador": "Ramon"
 }
+
+
 
 ### Actualizar evento
 ###
-PUT {{host}}/api/events/14
+PUT {{host}}/api/events/45
 Authorization: {{tokenPepe}}
 Content-Type: application/json
 
@@ -42,51 +109,7 @@ Content-Type: application/json
 
 
 ### Borrar un evento
-DELETE {{host}}/api/events/41
-Authorization: {{tokenPepe}}
-
-
-### Obtener eventos por fecha
-###
-GET {{host}}/api/events/upcoming
-
-
-### Obtener por tipos de deporte
-###
-GET {{host}}/api/events/sports?type=Atletismo
-
-
-// TODO: GET /api/events/date?from=2023-09-10&to=2023-09-20: Devuelve los eventos dentro del rango de fechas especificado.
-
-### REQUEST USERS
-
-### Registrar nuevo usuario
-###
-POST {{host}}/api/users/register
-Content-Type: application/json
-
-{
-    "username": "Pepito",
-    "password": "1234"
-}
-
-
-###
-POST {{host}}/api/users/login
-Content-Type: application/json
-
-{
-    "username": "Laura",
-    "password": "1234"
-}
-
-###
-GET {{host}}/api/users/profile/
-Authorization: {{tokenPepe}}
-
-
-
-
-
+DELETE {{host}}/api/events/44
+Authorization: eyJhbGciOiJIUzI1NiJ9.THVjw61h.JGq1x4tEkB1YiKsuHFmZ7H7g1QxZDzHZAfFGOQ5gQmw
 
 

@@ -1,14 +1,12 @@
-// Comprobar si el clienteid es válido, si sirve para hacer peticiones.
-// exports.nombredelafunción = lafunción anónima. SE PUEDE HACER TAMBIÉN CON MODULE.EXPORTS = { }
-// Este checkId en principio tendrá los mismo datos que nos da la petición, porque pasa por el antes de poder hacer la petición como tal. Por lo tanto podemos extraer de los parámetros el clienteId
 const jwt = require('jsonwebtoken');
 const env = require('dotenv');
 const { selectById } = require('../models/events_models');
+const { getByUsername } = require('../models/users_models');
 
 
 // Middleware para comprobar que el id introducido es correcto.
 exports.checkEventId = async (req, res, next) => {
-    const { idEvent } = req.params // Requerimos el id de los parámetros de la petición. (url)
+    const { idEvent } = req.params
     if (isNaN(idEvent)) {
         return res.status(400).json({ message: 'El ID introducido debe ser un número.' });
     }
@@ -20,18 +18,11 @@ exports.checkEventId = async (req, res, next) => {
 }
 
 
-exports.crearToken = (username) => {
-    env.config();
-    const tokenkey = process.env.TOKEN_KEY
-    const token = jwt.sign(username, tokenkey);
-    return token
-}
-
 // Comprobar usuario por token
-exports.usuarioEstaLogueado = (req, res, next) => {
+exports.userLogging = (req, res, next) => {
     const token = req.headers.authorization;
     if (!token) {
-        return res.status(400).json({ message: "No has enviado el token" })
+        return res.status(401).json({ message: "Debes introducir la autenticación." })
     }
     try {
         env.config();
@@ -40,9 +31,28 @@ exports.usuarioEstaLogueado = (req, res, next) => {
         req.username = userName;
         next();
     } catch (error) {
-        res.status(400).json({ message: "El token es erroneo" });
+        res.status(403).json({ message: "La autenticación es errónea." });
     }
 }
+
+// El usuario nos pasa un token en el header de la petición, de ahí debemos extraer el rol y comprobar si es administrador.
+exports.checkAdmin = async (req, res, next) => {
+    const token = req.headers.authorization;
+    try {
+        env.config();
+        const tokenkey = process.env.TOKEN_KEY;
+        const decoded = jwt.verify(token, tokenkey);
+        const user = await getByUsername(decoded);
+        const userRol = user.rol;
+        if (userRol !== 'admin') {
+            return res.status(403).json({ message: "Debes tener permisos de administrador." });
+        }
+        next();
+    } catch (error) {
+        next(error)
+    }
+}
+
 
 
 

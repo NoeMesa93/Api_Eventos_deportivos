@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 
-const { newUser, getById, getByUsername } = require("../models/users_models");
+const { getById, getByUsername, postUser } = require("../models/users_models");
 const { crearToken } = require('../utils/middlewares');
 
 // Recuperar usuario por ID
@@ -18,25 +18,28 @@ const UserId = async (req, res, next) => {
 }
 
 // Crear nuevo usuario
-const postUser = async (req, res, next) => {
+const newUser = async (req, res, next) => {
     req.body.password = await bcrypt.hash(req.body.password, 10);
+    const { username } = req.body;
     try {
-        const { username } = req.body;
         const user = await getByUsername(username);
         if (user) {
-            return res.status(400).json({ message: "Error existe usuario." });
+            return res.status(409).json({ message: "El usuario ya existe en la base de datos." });
         }
 
     } catch (error) {
         next(error)
     }
-
     try {
-        const user = await newUser(req.body);
-        if (user === 0) {
-            return res.status(404).json({ message: 'Error, login incorrecto' });
+        const newUserResult = await postUser(req.body);
+        console.log(newUserResult)
+        if (newUserResult === 0) {
+            return res.status(500).json({ message: 'Error al crear el nuevo usuario.' });
         }
-        res.json({ message: "Usuario creado" });
+        res.json({
+            message: `Usuario ${username} ha sido creado.👌`
+
+        });
     } catch (error) {
         next(error);
     }
@@ -49,12 +52,12 @@ const login = async (req, res, next) => {
     try {
         const user = await getByUsername(username);
         if (!user) {
-            return res.status(400).json({ message: 'El usuario y/o contraseña no existe' });
+            return res.status(401).json({ message: 'El usuario y/o contraseña no existe' });
         }
 
         const contrasenasoniguales = await bcrypt.compare(password, user.password)
         if (!contrasenasoniguales) {
-            return res.status(400).json({ message: 'El usuario y/o contraseña no existe' });
+            return res.status(401).json({ message: 'El usuario y/o contraseña no existe' });
         }
         const token = crearToken(username);
         res.json({ token: token });
@@ -64,15 +67,21 @@ const login = async (req, res, next) => {
     }
 }
 
-
-const profile = (req, res, next) => {
-    console.log(req.username)
-
+// Devolver información del usuario autentificado
+const profile = async (req, res, next) => {
+    try {
+        userName = req.username
+        const user = await getByUsername(userName)
+        return res.json(user);
+    } catch (error) {
+        next(error)
+    }
 }
+
 
 module.exports = {
     UserId,
-    postUser,
+    newUser,
     login,
     profile
 }

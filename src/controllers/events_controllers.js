@@ -1,4 +1,5 @@
-const { selectAll, selectById, insertEvent, updateEvent, supEvent, getByDate, getBySportType, } = require('../models/events_models')
+const { selectAll, selectById, insertEvent, updateEvent, supEvent, getByDate, getBySportType, getEventsByDate, } = require('../models/events_models')
+
 
 // Seleccionar todos los eventos
 const selectAllEvents = async (req, res, next) => {
@@ -19,7 +20,7 @@ const selectIdEvent = async (req, res, next) => {
     const event = await selectById(idEvent);
     try {
         if (!event) {
-            return res.status(400).json({ message: 'Error, el id del evento no existe' })
+            return res.status(400).json({ message: 'Error, el id del evento no existe.' })
         }
         res.json(event);
     } catch (error) {
@@ -28,13 +29,71 @@ const selectIdEvent = async (req, res, next) => {
 }
 
 
+// Obtener eventos por fecha y orden ascendente.
+const getEventsDate = async (req, res, next) => {
+    try {
+        const events = await getByDate();
+        if (!events) {
+            return res.status(404).json({ message: 'No se encontraron eventos próximos.' })
+        }
+        res.json(events);
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+// Filtrar eventos por tipos de deporte
+const selectBySportType = async (req, res, next) => {
+    const { tipoDeporte } = req.query;
+    try {
+        const events = await getBySportType(tipoDeporte);
+        if (events.length === 0) {
+            return res.status(404).json({ message: 'No hay eventos para ese tipo de deporte' });
+        }
+        res.json(events);
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+// Filtrar eventos por rango de fechas
+const eventByDateRange = async (req, res, next) => {
+    const { from, to } = req.query;
+    try {
+        const events = await getEventsByDate(from, to)
+
+        if (!from || !to) {
+            return res.status(404).json({ message: 'Ambas fechas deben ser rellenadas.' })
+        }
+
+        const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+        // const fromDate = new Date(from);
+        // const toDate = new Date(to);
+
+        if (isNaN(dateFormat) && !dateFormat.test(from) || !dateFormat.test(to)) {
+            return res.status(404).json({ message: 'Formato de fecha no válido. Introduce YYYY-MM-DD' })
+        }
+
+        if (events.length === 0) {
+            return res.status(404).json({ message: 'No hay eventos en ese rango de fechas.' })
+        }
+        res.json(events);
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 // Crear nuevo evento
 const postEvent = async (req, res, next) => {
+
     try {
-        const result = await insertEvent(req.body);
-        if (result === 0) {
-            return res.status(404).json({ message: 'No se ha podido insertar el nuevo evento.' });
+        if (!req.body.nombre || !req.body.descripcion || !req.body.fecha || !req.body.ubicacion || !req.body.tipoDeporte || !req.body.organizador) {
+            return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
         }
+        const result = await insertEvent(req.body);
         const event = await selectById(result);
         res.json(event);
     } catch (error) {
@@ -49,7 +108,7 @@ const putEvent = async (req, res, next) => {
     try {
         const result = await updateEvent(idEvent, req.body);
         if (result.affectedRows !== 1) {
-            res.status(404).json({ message: 'No se ha podido actualizar el evento' })
+            res.status(404).json({ message: 'No se ha podido actualizar el evento.' })
         }
         const event = await selectById(idEvent);
         res.json(event);
@@ -64,6 +123,9 @@ const deleteEvent = async (req, res, next) => {
     const { idEvent } = req.params;
     try {
         const event = await selectById(idEvent);
+        if (!event) {
+            return send.status(404).json({ message: 'El evento no existe.' })
+        }
         await supEvent(idEvent);
         res.json(event);
     } catch (error) {
@@ -73,43 +135,14 @@ const deleteEvent = async (req, res, next) => {
 }
 
 
-// Obtener eventos por fecha y orden ascendente.
-const getEventsDate = async (req, res, next) => {
-    const events = await getByDate();
-    try {
-        if (!events) {
-            return res.status(404).json({ message: "No se encontraron eventos próximos." })
-        }
-        res.json(events);
-    } catch (error) {
-        next(error);
-    }
-}
-
-// Filtrar eventos por tipos de deporte
-const eventsBySportType = async (req, res, next) => {
-    const { type } = req.query;
-    try {
-        const events = await getBySportType(type); // Usar "type" aquí también
-
-        if (events.length === 0) {
-            return res.status(404).json({ message: "No hay eventos para ese tipo de deporte" });
-        }
-
-        res.json(events); // Enviar eventos como respuesta
-    } catch (error) {
-        next(error); // Manejo de errores
-    }
-}
-
-
 
 module.exports = {
     selectAllEvents,
     selectIdEvent,
+    eventByDateRange,
+    getEventsDate,
+    selectBySportType,
     postEvent,
     putEvent,
-    deleteEvent,
-    getEventsDate,
-    eventsBySportType
+    deleteEvent
 }

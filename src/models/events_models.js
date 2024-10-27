@@ -7,6 +7,7 @@ const selectAll = async () => {
     return result;
 }
 
+
 //  Devuelve los detalles de un evento específico por su ID.
 const selectById = async (idEvent) => {
     const [result] = await pool.query('SELECT * FROM eventos WHERE id = ?', [idEvent]);
@@ -16,14 +17,11 @@ const selectById = async (idEvent) => {
 
 
 // Crea un nuevo evento deportivo
-const insertEvent = async ({ nombre, descripcion, fecha, ubicacion, tipoDeporte }) => {
-    const [result] = await pool.query('INSERT INTO eventos (nombre, descripcion, fecha, ubicacion, tipoDeporte) values (?, ?, ?, ?, ?)', [nombre, descripcion, fecha, ubicacion, tipoDeporte]);
-    if (result.affectedRows === 0) {
-        return -1;
-    } else {
-        return result.insertId;
-    }
+const insertEvent = async ({ nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador }) => {
+    const [result] = await pool.query('INSERT INTO eventos (nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador) values (?, ?, ?, ?, ?, ?)', [nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador]);
+    return result.insertId;
 }
+
 
 // Actualizar evento existente
 const updateEvent = async (idEvent, { nombre, descripcion, fecha, ubicacion, tipoDeporte }) => {
@@ -38,15 +36,31 @@ const supEvent = async (idEvent) => {
     return result;
 }
 
+
 // Obtener eventos por fecha y orden ascendente.
 const getByDate = async () => {
     const [result] = await pool.query('SELECT * FROM eventos WHERE fecha > CURDATE() ORDER BY fecha ASC');
     return result;
 }
 
+
 // Obtener eventos por tipos de deporte
 const getBySportType = async (tipoDeporte) => {
-    const [result] = await pool.query('SELECT * FROM eventos WHERE tipoDeporte = ? ORDER BY fecha ASC', [tipoDeporte])
+    const [result] = await pool.query('SELECT * FROM eventos WHERE tipoDeporte = ?', [tipoDeporte])
+    return result;
+}
+
+
+// Obtener eventos entre un rango de fechas específico.
+const getEventsByDate = async (from, to) => {
+    const [result] = await pool.query('SELECT * FROM eventos WHERE fecha BETWEEN ? AND ?', [from, to]);
+    console.log(result)
+    return result;
+}
+
+
+const getElementByPage = (limit, offset) => {
+    const [result] = pool.query('SELECT * FROM usuarios LIMIT ? OFFSET ?', [limit, offset]);
     return result;
 }
 
@@ -59,5 +73,7 @@ module.exports = {
     updateEvent,
     supEvent,
     getByDate,
-    getBySportType
+    getBySportType,
+    getEventsByDate,
+    getElementByPage
 }
