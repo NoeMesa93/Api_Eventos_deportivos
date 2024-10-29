@@ -32,7 +32,6 @@ const newUser = async (req, res, next) => {
     }
     try {
         const newUserResult = await postUser(req.body);
-        console.log(newUserResult)
         if (newUserResult === 0) {
             return res.status(500).json({ message: 'Error al crear el nuevo usuario.' });
         }
@@ -47,7 +46,6 @@ const newUser = async (req, res, next) => {
 
 // Login usuario
 const login = async (req, res, next) => {
-    console.log('asdds')
     const { username, password } = req.body;
     try {
         const user = await getByUsername(username);
@@ -55,8 +53,8 @@ const login = async (req, res, next) => {
             return res.status(401).json({ message: 'El usuario y/o contraseña no existe' });
         }
 
-        const contrasenasoniguales = await bcrypt.compare(password, user.password)
-        if (!contrasenasoniguales) {
+        const passwordAreEqual = await bcrypt.compare(password, user.password)
+        if (!passwordAreEqual) {
             return res.status(401).json({ message: 'El usuario y/o contraseña no existe' });
         }
         const token = crearToken(username);

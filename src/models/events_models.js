@@ -1,7 +1,7 @@
 const pool = require('../config/db')
 
 
-// Devuelve una lista de todos los eventos deportivos.
+// Devuelve una lista de todos los eventos.
 const selectAll = async () => {
     const [result] = await pool.query('SELECT * FROM eventos');
     return result;
@@ -12,29 +12,9 @@ const selectAll = async () => {
 const selectById = async (idEvent) => {
     const [result] = await pool.query('SELECT * FROM eventos WHERE id = ?', [idEvent]);
     if (result.lenght === 0) return null;
-    return result[0]
+    return result[0];
 }
 
-
-// Crea un nuevo evento deportivo
-const insertEvent = async ({ nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador }) => {
-    const [result] = await pool.query('INSERT INTO eventos (nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador) values (?, ?, ?, ?, ?, ?)', [nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador]);
-    return result.insertId;
-}
-
-
-// Actualizar evento existente
-const updateEvent = async (idEvent, { nombre, descripcion, fecha, ubicacion, tipoDeporte }) => {
-    const [result] = await pool.query('UPDATE eventos SET nombre = ?, descripcion = ?, fecha = ?, ubicacion = ?, tipoDeporte = ? WHERE id = ?', [nombre, descripcion, fecha, ubicacion, tipoDeporte, idEvent]);
-    return result;
-}
-
-
-// Eliminar un evento por id.
-const supEvent = async (idEvent) => {
-    const [result] = await pool.query('DELETE FROM eventos WHERE id = ?', [idEvent]);
-    return result;
-}
 
 
 // Obtener eventos por fecha y orden ascendente.
@@ -54,13 +34,33 @@ const getBySportType = async (tipoDeporte) => {
 // Obtener eventos entre un rango de fechas específico.
 const getEventsByDate = async (from, to) => {
     const [result] = await pool.query('SELECT * FROM eventos WHERE fecha BETWEEN ? AND ?', [from, to]);
-    console.log(result)
     return result;
 }
 
 
-const getElementByPage = (limit, offset) => {
-    const [result] = pool.query('SELECT * FROM usuarios LIMIT ? OFFSET ?', [limit, offset]);
+const getElementByPage = async (limit, offset) => {
+    const [result] = await pool.query('SELECT * FROM eventos LIMIT ? OFFSET ?', [limit, offset]);
+    if (result.lenght === 0) return null;
+    return result;
+}
+
+// Crea un nuevo evento deportivo
+const insertEvent = async ({ nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador }) => {
+    const [result] = await pool.query('INSERT INTO eventos (nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador) values (?, ?, ?, ?, ?, ?)', [nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador]);
+    return result.insertId;
+}
+
+
+// Actualizar evento existente
+const updateEvent = async (idEvent, { nombre, descripcion, fecha, ubicacion, tipoDeporte }) => {
+    const [result] = await pool.query('UPDATE eventos SET nombre = ?, descripcion = ?, fecha = ?, ubicacion = ?, tipoDeporte = ? WHERE id = ?', [nombre, descripcion, fecha, ubicacion, tipoDeporte, idEvent]);
+    return result;
+}
+
+
+// Eliminar un evento por id.
+const supEvent = async (idEvent) => {
+    const [result] = await pool.query('DELETE FROM eventos WHERE id = ?', [idEvent]);
     return result;
 }
 

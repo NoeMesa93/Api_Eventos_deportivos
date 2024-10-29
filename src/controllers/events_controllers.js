@@ -1,14 +1,26 @@
-const { selectAll, selectById, insertEvent, updateEvent, supEvent, getByDate, getBySportType, getEventsByDate, } = require('../models/events_models')
+const { selectAll, selectById, insertEvent, updateEvent, supEvent, getByDate, getBySportType, getEventsByDate, getElementByPage, } = require('../models/events_models')
 
 
-// Seleccionar todos los eventos
-const selectAllEvents = async (req, res, next) => {
+
+
+// Seleccionar todos los eventos.
+const selectEventsOrSportType = async (req, res, next) => {
     try {
-        const result = await selectAll();
-        if (!result) {
-            return res.status(404).json({ message: 'No se encontraron eventos.' })
+        if (req.query.type) {
+            selectBySportType(req, res, next)
+            // const result = await getBySportType(req, res, next);
+            // if (result.length === 0) {
+            //     return res.status(404).json({ message: 'No se encontraron eventos de este deporte.' })
+            // }
+            // res.json(result);
+
+        } else {
+            const result = await selectAll();
+            if (!result) {
+                return res.status(404).json({ message: 'No se encontraron eventos.' })
+            }
+            res.json(result);
         }
-        res.json(result);
     } catch (error) {
         next(error);
     }
@@ -16,18 +28,14 @@ const selectAllEvents = async (req, res, next) => {
 
 // Seleccionar evento por id
 const selectIdEvent = async (req, res, next) => {
-    const { idEvent } = req.params;
-    const event = await selectById(idEvent);
     try {
-        if (!event) {
-            return res.status(400).json({ message: 'Error, el id del evento no existe.' })
-        }
+        const { idEvent } = req.params;
+        const event = await selectById(idEvent);
         res.json(event);
     } catch (error) {
         next(error);
     }
 }
-
 
 // Obtener eventos por fecha y orden ascendente.
 const getEventsDate = async (req, res, next) => {
@@ -42,12 +50,11 @@ const getEventsDate = async (req, res, next) => {
     }
 }
 
-
 // Filtrar eventos por tipos de deporte
 const selectBySportType = async (req, res, next) => {
-    const { tipoDeporte } = req.query;
+    const { type } = req.query;
     try {
-        const events = await getBySportType(tipoDeporte);
+        const events = await getBySportType(type);
         if (events.length === 0) {
             return res.status(404).json({ message: 'No hay eventos para ese tipo de deporte' });
         }
@@ -86,9 +93,23 @@ const eventByDateRange = async (req, res, next) => {
 }
 
 
+const pagination = async (req, res, next) => {
+    try {
+        let { page, limit } = req.query;
+        if (page <= 0 || limit < 0) {
+            return res.status(401).json({ message: 'Los números introducidos deben ser mayor que 1' })
+        }
+        limit = parseInt(limit)
+        const offset = (page - 1) * limit;
+        const pagina = await getElementByPage(limit, offset);
+        res.json(pagina);
+    } catch (error) {
+        next(error)
+    }
+}
+
 // Crear nuevo evento
 const postEvent = async (req, res, next) => {
-
     try {
         if (!req.body.nombre || !req.body.descripcion || !req.body.fecha || !req.body.ubicacion || !req.body.tipoDeporte || !req.body.organizador) {
             return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
@@ -137,12 +158,13 @@ const deleteEvent = async (req, res, next) => {
 
 
 module.exports = {
-    selectAllEvents,
+    selectEventsOrSportType,
     selectIdEvent,
     eventByDateRange,
     getEventsDate,
     selectBySportType,
     postEvent,
     putEvent,
-    deleteEvent
+    deleteEvent,
+    pagination
 }

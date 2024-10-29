@@ -40,7 +40,7 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.THVjw61h.JGq1x4tEkB1YiKsuHFmZ7H7g1QxZDzHZAfF
 
 ### Obtener todos los eventos
 ###
-GET {{host}}/api/events
+GET {{host}}/api/events/
 Authorization: {{tokenLaura}}
 
 
@@ -61,7 +61,7 @@ Authorization: {{tokenLaura}}
 
 ### Obtener por tipos de deporte
 ###
-GET {{host}}/api/events?tipoDeporte=Fútbol
+GET {{host}}/api/events?type=Fútbol
 Authorization: {{tokenLaura}}
 
 
@@ -71,8 +71,11 @@ GET {{host}}/api/events/date?from=2025-05-02&to=2025-09-20
 Authorization: {{tokenLaura}}
 
 
-TODO
-//Obtener eventos por página
+
+###Obtener eventos por página
+###
+GET {{host}}/api/events/page?page=2&limit=5
+Authorization: {{tokenLaura}}
 
 
 
