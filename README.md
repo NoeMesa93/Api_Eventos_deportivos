@@ -11,7 +11,7 @@ Todas las rutas de la API para eventos están protegidas mediante JWT. Para acce
 
 ENDPOINT: /api/users/register
 MÉTODO: POST
-HEADERS: X
+HEADERS:
 BODY:
 
     {
@@ -164,3 +164,14 @@ BODY:
 - Devuelve los eventos indicados entre ese rango de fechas.
 - Si no se rellena una fecha muestra un mensaje de error.
 - Si no escribimos la fecha completa o escribimos letras nos dará un mensaje de error.
+
+### Mostrar eventos por paginación y límite.
+
+URL: /api/events/page?page=1&limit=10
+MÉTODO: GET
+HEADERS: Authorization: Bearer <token>
+BODY:
+
+- Recibe un número de página y un límite de eventos en el endpoint y un token JWT en el encabezado de autorización.
+- Devuelve eventos por paginación y límite.
+- Si se rellena mal el límite o paginación muestra un mensaje de error.

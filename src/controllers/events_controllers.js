@@ -1,24 +1,15 @@
 const { selectAll, selectById, insertEvent, updateEvent, supEvent, getByDate, getBySportType, getEventsByDate, getElementByPage, } = require('../models/events_models')
 
 
-
-
-// Seleccionar todos los eventos.
+// Seleccionar todos los eventos
 const selectEventsOrSportType = async (req, res, next) => {
     try {
         if (req.query.type) {
-            selectBySportType(req, res, next)
-            // const result = await getBySportType(req, res, next);
-            // if (result.length === 0) {
-            //     return res.status(404).json({ message: 'No se encontraron eventos de este deporte.' })
-            // }
-            // res.json(result);
-
+            await selectBySportType(req, res, next)
         } else {
             const result = await selectAll();
-            if (!result) {
-                return res.status(404).json({ message: 'No se encontraron eventos.' })
-            }
+            if (!result) return res.status(404).json({ message: 'No se encontraron eventos.' })
+
             res.json(result);
         }
     } catch (error) {
@@ -28,6 +19,7 @@ const selectEventsOrSportType = async (req, res, next) => {
 
 // Seleccionar evento por id
 const selectIdEvent = async (req, res, next) => {
+    console.log('hola');
     try {
         const { idEvent } = req.params;
         const event = await selectById(idEvent);
@@ -41,9 +33,7 @@ const selectIdEvent = async (req, res, next) => {
 const getEventsDate = async (req, res, next) => {
     try {
         const events = await getByDate();
-        if (!events) {
-            return res.status(404).json({ message: 'No se encontraron eventos próximos.' })
-        }
+        if (!events) return res.status(404).json({ message: 'No se encontraron eventos próximos.' })
         res.json(events);
     } catch (error) {
         next(error);
@@ -55,9 +45,8 @@ const selectBySportType = async (req, res, next) => {
     const { type } = req.query;
     try {
         const events = await getBySportType(type);
-        if (events.length === 0) {
-            return res.status(404).json({ message: 'No hay eventos para ese tipo de deporte' });
-        }
+        if (events.length === 0) return res.status(404).json({ message: 'No hay eventos para ese tipo de deporte' });
+
         res.json(events);
     } catch (error) {
         next(error);
@@ -76,8 +65,6 @@ const eventByDateRange = async (req, res, next) => {
         }
 
         const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
-        // const fromDate = new Date(from);
-        // const toDate = new Date(to);
 
         if (isNaN(dateFormat) && !dateFormat.test(from) || !dateFormat.test(to)) {
             return res.status(404).json({ message: 'Formato de fecha no válido. Introduce YYYY-MM-DD' })
@@ -92,13 +79,14 @@ const eventByDateRange = async (req, res, next) => {
     }
 }
 
-
+// Ver eventos por página
 const pagination = async (req, res, next) => {
     try {
         let { page, limit } = req.query;
-        if (page <= 0 || limit < 0) {
-            return res.status(401).json({ message: 'Los números introducidos deben ser mayor que 1' })
-        }
+        if (page <= 0 || limit < 0) return res.status(401).json({ message: 'Números no válidos.' })
+
+        if (isNaN(page) || isNaN(limit)) return res.status(401).json({ message: 'Debes introducir un número.' })
+
         limit = parseInt(limit)
         const offset = (page - 1) * limit;
         const pagina = await getElementByPage(limit, offset);
@@ -128,9 +116,8 @@ const putEvent = async (req, res, next) => {
     const { idEvent } = req.params;
     try {
         const result = await updateEvent(idEvent, req.body);
-        if (result.affectedRows !== 1) {
-            res.status(404).json({ message: 'No se ha podido actualizar el evento.' })
-        }
+        if (result.affectedRows !== 1) res.status(404).json({ message: 'No se ha podido actualizar el evento.' })
+
         const event = await selectById(idEvent);
         res.json(event);
     } catch (error) {
@@ -144,9 +131,7 @@ const deleteEvent = async (req, res, next) => {
     const { idEvent } = req.params;
     try {
         const event = await selectById(idEvent);
-        if (!event) {
-            return send.status(404).json({ message: 'El evento no existe.' })
-        }
+        if (!event) return send.status(404).json({ message: 'El evento no existe.' })
         await supEvent(idEvent);
         res.json(event);
     } catch (error) {

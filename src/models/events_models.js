@@ -8,6 +8,7 @@ const selectAll = async () => {
 }
 
 
+
 //  Devuelve los detalles de un evento específico por su ID.
 const selectById = async (idEvent) => {
     const [result] = await pool.query('SELECT * FROM eventos WHERE id = ?', [idEvent]);
@@ -29,6 +30,7 @@ const getBySportType = async (tipoDeporte) => {
     const [result] = await pool.query('SELECT * FROM eventos WHERE tipoDeporte = ?', [tipoDeporte])
     return result;
 }
+
 
 
 // Obtener eventos entre un rango de fechas específico.

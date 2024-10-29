@@ -61,7 +61,7 @@ Authorization: {{tokenLaura}}
 
 ### Obtener por tipos de deporte
 ###
-GET {{host}}/api/events?type=Fútbol
+GET {{host}}/api/events?type=
 Authorization: {{tokenLaura}}
 
 
@@ -74,7 +74,7 @@ Authorization: {{tokenLaura}}
 
 ###Obtener eventos por página
 ###
-GET {{host}}/api/events/page?page=2&limit=5
+GET {{host}}/api/events/page?page=ddd&limit=dddd
 Authorization: {{tokenLaura}}
 
 
@@ -98,7 +98,7 @@ Content-Type: application/json
 
 ### Actualizar evento
 ###
-PUT {{host}}/api/events/45
+PUT {{host}}/api/events/70
 Authorization: {{tokenPepe}}
 Content-Type: application/json
 

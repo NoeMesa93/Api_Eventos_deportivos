@@ -1,20 +1,15 @@
 // Creation and configuration of the Express APP
 const express = require('express');
 const cors = require('cors');
-
 const app = express();
 app.use(express.json());
 
-// Middleware genérico para todos.
 
-
+// Route configuration
 app.use('/api', require('./routes/api.routes.js'))
 
 app.use(cors());
 
-// Route configuration
-// Ex.
-// app.use('/api', require('./routes/api'));
 
 // Error handler
 app.use((err, req, res, next) => {
