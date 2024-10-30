@@ -12,8 +12,8 @@ Content-Type: application/json
 
 
 {
-    "username": "Lucía",
-    "password": "2525"
+    "username": ,
+    "password": 
 }
 
 
@@ -23,8 +23,8 @@ POST {{host}}/api/users/login
 Content-Type: application/json
 
 {
-    "username": "Lucía",
-    "password": "2525"
+    "username": ,
+    "password": 
 }
 
 
@@ -86,12 +86,12 @@ Authorization: {{tokenPepe}}
 Content-Type: application/json
 
 {
-    "nombre": "Partido de fútbol sala",
-    "descripcion": "Campeonato de fútbol entre los equipos de la liga",
-    "fecha": "2025-05-02",
-    "ubicacion": "Madrid",
-    "tipoDeporte": "Fútbol",
-    "organizador": "Ramon"
+    "nombre": ,
+    "descripcion": ,
+    "fecha": ,
+    "ubicacion": ,
+    "tipoDeporte": ,
+    "organizador": 
 }
 
 
@@ -103,11 +103,11 @@ Authorization: {{tokenPepe}}
 Content-Type: application/json
 
 {
-    "nombre": "Campeonato Fútbol Sala",
-    "descripcion": "Semifinal del campeonato regional de fútbol sala",
-    "fecha": "2025-8-5",
-    "ubicacion": "Burgos",
-    "tipoDeporte": "Fútbol"
+    "nombre": ,    
+    "descripcion": ,    
+    "fecha": ,    
+    "ubicacion": ,
+    "tipoDeporte":
 }
 
 

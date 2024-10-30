@@ -19,7 +19,6 @@ const selectEventsOrSportType = async (req, res, next) => {
 
 // Seleccionar evento por id
 const selectIdEvent = async (req, res, next) => {
-    console.log('hola');
     try {
         const { idEvent } = req.params;
         const event = await selectById(idEvent);
