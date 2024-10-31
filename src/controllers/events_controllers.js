@@ -97,10 +97,13 @@ const pagination = async (req, res, next) => {
 
 // Crear nuevo evento
 const postEvent = async (req, res, next) => {
+    const file = req.file.path
+
     try {
         if (!req.body.nombre || !req.body.descripcion || !req.body.fecha || !req.body.ubicacion || !req.body.tipoDeporte || !req.body.organizador) {
             return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
         }
+        req.body.imagen = file
         const result = await insertEvent(req.body);
         const event = await selectById(result);
         res.json(event);

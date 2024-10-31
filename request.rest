@@ -78,21 +78,41 @@ GET {{host}}/api/events/page?page=ddd&limit=dddd
 Authorization: {{tokenLaura}}
 
 
-
-### Crear nuevo evento
 ###
 POST {{host}}/api/events
 Authorization: {{tokenPepe}}
-Content-Type: application/json
+Content-Type: multipart/form-data; boundary=----formulario
 
-{
-    "nombre": ,
-    "descripcion": ,
-    "fecha": ,
-    "ubicacion": ,
-    "tipoDeporte": ,
-    "organizador": 
-}
+------formulario
+Content-Disposition: form-data; name="nombre"
+
+Noelia
+------formulario
+Content-Disposition: form-data; name="descripcion"
+
+Descripcion evento
+------formulario
+Content-Disposition: form-data; name="fecha"
+
+2024-10-02
+------formulario
+Content-Disposition: form-data; name="ubicacion"
+
+España
+------formulario
+Content-Disposition: form-data; name="tipoDeporte"
+
+Futbol
+------formulario
+Content-Disposition: form-data; name="organizador"
+
+Pepe
+------formulario
+Content-Disposition: form-data; name="imagen"; filename="test.jpg"
+Content-Type: image/jpeg
+
+< ./test.jpg
+------formulario--
 
 
 

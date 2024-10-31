@@ -1,7 +1,23 @@
 const jwt = require('jsonwebtoken');
 const env = require('dotenv');
+const multer = require('multer');
 const { selectById } = require('../models/events_models');
 const { getByUsername } = require('../models/users_models');
+
+
+
+
+const storage = multer.diskStorage({
+    destination: 'uploads/',
+    filename: (req, file, cb) => {
+        const imageName = `image-${Date.now()}.jpg`;
+        cb(null, imageName);
+    }
+})
+
+const uploads = multer({ storage });
+
+exports.singleFileUpload = uploads.single('imagen');
 
 
 // Middleware para comprobar que el id introducido es correcto.

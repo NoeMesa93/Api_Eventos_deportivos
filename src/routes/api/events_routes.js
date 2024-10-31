@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { selectEventsOrSportType, selectIdEvent, postEvent, putEvent, deleteEvent, getEventsDate, selectBySportType, eventByDateRange, pagination } = require('../../controllers/events_controllers');
-const { checkEventId, checkAdmin } = require('../../utils/middlewares');
+const { checkEventId, checkAdmin, singleFileUpload } = require('../../utils/middlewares');
 
 
 // URL BASE: /api/events
@@ -23,7 +23,7 @@ router.get('/date', eventByDateRange);
 router.get('/:idEvent', checkEventId, selectIdEvent);
 
 // Crear nuevo evento.
-router.post('/', checkAdmin, postEvent);
+router.post('/', checkAdmin, singleFileUpload, postEvent);
 
 // Modificar evento por id.
 router.put('/:idEvent', checkAdmin, checkEventId, putEvent);

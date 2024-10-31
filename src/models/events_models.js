@@ -47,8 +47,8 @@ const getElementByPage = async (limit, offset) => {
 }
 
 // Crea un nuevo evento deportivo
-const insertEvent = async ({ nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador }) => {
-    const [result] = await pool.query('INSERT INTO eventos (nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador) values (?, ?, ?, ?, ?, ?)', [nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador]);
+const insertEvent = async ({ nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador, imagen }) => {
+    const [result] = await pool.query('INSERT INTO eventos (nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador, imagen) values (?, ?, ?, ?, ?, ?, ?)', [nombre, descripcion, fecha, ubicacion, tipoDeporte, organizador, imagen]);
     return result.insertId;
 }
 
