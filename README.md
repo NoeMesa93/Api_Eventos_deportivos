@@ -44,7 +44,7 @@ BODY:
 
 URL: /api/users/profile
 MÉTODO: GET
-HEADERS: Authorization: Bearer <token>
+HEADERS: Authorization: <token>
 BODY:
 
 - Recibe un token JWT en el encabezado de autorización.
@@ -58,7 +58,7 @@ BODY:
 
 URL: /api/events
 MÉTODO: GET
-HEADERS: Authorization: Bearer <token>
+HEADERS: Authorization: <token>
 BODY:
 
 - Recibe un token JWT en el encabezado de autorización.
@@ -80,7 +80,7 @@ BODY:
 
 URL: /api/events
 MÉTODO: POST
-HEADERS: Authorization: Bearer <token>
+HEADERS: Authorization: <token>
 BODY:
 
 {
@@ -103,7 +103,7 @@ BODY:
 
 URL: /api/events/:idEvent
 MÉTODO: PUT
-HEADERS: Authorization: Bearer <token>
+HEADERS: Authorization: <token>
 BODY:
 
 {
@@ -123,7 +123,7 @@ BODY:
 
 URL: /api/events/:idEvent
 MÉTODO: DELETE
-HEADERS: Authorization: Bearer <token>
+HEADERS: Authorization: <token>
 BODY:
 
 - Recibe un identificador de evento en la url y un token JWT en el encabezado de autorización.
@@ -146,7 +146,7 @@ BODY:
 
 URL: /api/events/sports?type=
 MÉTODO: GET
-HEADERS: Authorization: Bearer <token>
+HEADERS: Authorization: <token>
 BODY: (No se requiere cuerpo en esta solicitud)
 
 - Recibe un tipo de deporte en el endpoint y un token JWT en el encabezado de autorización.
@@ -157,7 +157,7 @@ BODY: (No se requiere cuerpo en esta solicitud)
 
 URL: /api/events/date?from=2023-09-10&to=2023-09-20
 MÉTODO: GET
-HEADERS: Authorization: Bearer <token>
+HEADERS: Authorization: <token>
 BODY:
 
 - Recibe un rango de fechas en el endpoint y un token JWT en el encabezado de autorización.
