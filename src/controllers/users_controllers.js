@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
+const { crearToken } = require('../utils/middlewares');
 
 const { getById, getByUsername, postUser } = require("../models/users_models");
-const { crearToken } = require('../utils/middlewares');
 
 // Recuperar usuario por ID
 const UserId = async (req, res, next) => {
@@ -19,18 +19,17 @@ const UserId = async (req, res, next) => {
 
 // Crear nuevo usuario
 const newUser = async (req, res, next) => {
-    req.body.password = await bcrypt.hash(req.body.password, 10);
     const { username } = req.body;
     try {
         const user = await getByUsername(username);
         if (user) {
             return res.status(409).json({ message: "El usuario ya existe en la base de datos." });
         }
-
     } catch (error) {
         next(error)
     }
     try {
+        req.body.password = await bcrypt.hash(req.body.password, 10);
         const newUserResult = await postUser(req.body);
         if (newUserResult === 0) {
             return res.status(500).json({ message: 'Error al crear el nuevo usuario.' });

@@ -9,7 +9,6 @@ const selectEventsOrSportType = async (req, res, next) => {
         } else {
             const result = await selectAll();
             if (!result) return res.status(404).json({ message: 'No se encontraron eventos.' })
-
             res.json(result);
         }
     } catch (error) {
@@ -28,6 +27,7 @@ const selectIdEvent = async (req, res, next) => {
     }
 }
 
+
 // Obtener eventos por fecha y orden ascendente.
 const getEventsDate = async (req, res, next) => {
     try {
@@ -38,6 +38,7 @@ const getEventsDate = async (req, res, next) => {
         next(error);
     }
 }
+
 
 // Filtrar eventos por tipos de deporte
 const selectBySportType = async (req, res, next) => {
@@ -78,6 +79,7 @@ const eventByDateRange = async (req, res, next) => {
     }
 }
 
+
 // Ver eventos por página
 const pagination = async (req, res, next) => {
     try {
@@ -97,8 +99,7 @@ const pagination = async (req, res, next) => {
 
 // Crear nuevo evento
 const postEvent = async (req, res, next) => {
-    const file = req.file.path
-
+    const file = req.file.path // guardamos la URL de la imagen.
     try {
         if (!req.body.nombre || !req.body.descripcion || !req.body.fecha || !req.body.ubicacion || !req.body.tipoDeporte || !req.body.organizador) {
             return res.status(400).json({ message: 'Todos los campos son obligatorios.' });

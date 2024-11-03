@@ -32,7 +32,6 @@ const getBySportType = async (tipoDeporte) => {
 }
 
 
-
 // Obtener eventos entre un rango de fechas específico.
 const getEventsByDate = async (from, to) => {
     const [result] = await pool.query('SELECT * FROM eventos WHERE fecha BETWEEN ? AND ?', [from, to]);

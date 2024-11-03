@@ -6,7 +6,7 @@ const { getByUsername } = require('../models/users_models');
 
 
 
-
+// Middleware para las imágenes.
 const storage = multer.diskStorage({
     destination: 'uploads/',
     filename: (req, file, cb) => {

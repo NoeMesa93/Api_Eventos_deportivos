@@ -9,7 +9,6 @@ const { checkEventId, checkAdmin, singleFileUpload } = require('../../utils/midd
 //Mostrar todos los eventos o por tipo de deporte
 router.get('/', selectEventsOrSportType);
 
-
 //Mostrar próximos eventos por fecha ascendente.
 router.get('/upcoming', getEventsDate);
 
